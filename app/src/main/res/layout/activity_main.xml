@@ -6,21 +6,27 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <!-- TextView to display the quiz question -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
         android:text="@string/question_text" />
 
+    <!-- Horizontal LinearLayout to hold the True and False buttons -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <!-- True button -->
         <Button
             android:id="@+id/true_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/true_button" />
+
+        <!-- False button -->
         <Button
             android:id="@+id/false_button"
             android:layout_width="wrap_content"

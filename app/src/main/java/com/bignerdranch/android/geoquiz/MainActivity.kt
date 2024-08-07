@@ -3,78 +3,102 @@ package com.bignerdranch.android.geoquiz
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.snackbar.Snackbar
-import android.widget.FrameLayout
+import com.bignerdranch.android.geoquiz.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    // Declare Button variables to hold references to the True and False buttons
-    private lateinit var trueButton: Button
-    private lateinit var falseButton: Button
+    private lateinit var binding: ActivityMainBinding
 
-    // Override the onCreate method to initialize the activity
+    // Question data class
+    data class Question(val textResId: Int, val answer: Boolean)
+
+    // List of questions
+    private val questionBank = listOf(
+        Question(R.string.question_australia, true),
+        Question(R.string.question_oceans, true),
+        Question(R.string.question_mideast, false),
+        Question(R.string.question_africa, false),
+        Question(R.string.question_americas, true),
+        Question(R.string.question_asia, true)
+    )
+
+    // Index to track the current question
+    private var currentIndex = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Enable edge-to-edge display to make the app take advantage of the entire screen area
+        // Enable edge-to-edge display
         enableEdgeToEdge()
 
-        // Set the layout for this activity
-        setContentView(R.layout.activity_main)
+        // Inflate the layout using View Binding
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Initialize the True and False buttons by finding them in the layout
-        trueButton = findViewById(R.id.true_button)
-        falseButton = findViewById(R.id.false_button)
-
-        // Set an onClick listener for the True button
-        trueButton.setOnClickListener { view: View ->
-            // Create and show a Snackbar with the message from the correct_toast string resource
-            val snackbar = Snackbar.make(view, R.string.correct_toast, Snackbar.LENGTH_SHORT)
-            // Customize the Snackbar
-            customizeSnackbar(snackbar)
-            snackbar.show() // Show the Snackbar
+        // Set click listeners for buttons
+        binding.trueButton.setOnClickListener { view: View ->
+            checkAnswer(true)
         }
 
-        // Set an onClick listener for the False button
-        falseButton.setOnClickListener { view: View ->
-            // Create and show a Snackbar with the message from the incorrect_toast string resource
-            val snackbar = Snackbar.make(view, R.string.incorrect_toast, Snackbar.LENGTH_SHORT)
-            // Customize the Snackbar
-            customizeSnackbar(snackbar)
-            snackbar.show() // Show the Snackbar
+        binding.falseButton.setOnClickListener { view: View ->
+            checkAnswer(false)
         }
 
-        // Set an onApplyWindowInsetsListener to adjust the padding of the main view based on system window insets
+        // Set click listener for the next button
+        val nextQuestionListener = View.OnClickListener {
+            // Move to the next question
+            currentIndex = (currentIndex + 1) % questionBank.size
+            updateQuestion()
+        }
+
+        // Set click listener for the next button
+        val previousQuestionListener = View.OnClickListener {
+            // Move to the previous question
+            currentIndex = if (currentIndex - 1 < 0) {
+                questionBank.size - 1
+            } else {
+                (currentIndex - 1) % questionBank.size
+            }
+            updateQuestion()
+        }
+
+        // Use the same listener for the nextButton and the questionTextView
+        binding.nextButton.setOnClickListener(nextQuestionListener)
+        binding.previousButton.setOnClickListener(previousQuestionListener)
+        binding.questionTextView.setOnClickListener(nextQuestionListener)
+
+        // Update the question at the start
+        updateQuestion()
+
+        // Adjust padding based on window insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            // Get the system bars insets (status bar, navigation bar, etc.)
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            // Apply the insets as padding to the view
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            // Return the insets to indicate they have been handled
             insets
         }
     }
 
-    // Method to customize the Snackbar
-    private fun customizeSnackbar(snackbar: Snackbar) {
-        val snackbarView = snackbar.view
-        val params = snackbarView.layoutParams as FrameLayout.LayoutParams
+    // Method to update the question text
+    private fun updateQuestion() {
+        val questionTextResId = questionBank[currentIndex].textResId
+        binding.questionTextView.setText(questionTextResId)
+    }
 
-        // Set margins
-        params.setMargins(50, 250, 50, 50) // Adjust margins as needed
-        snackbarView.layoutParams = params
+    private fun checkAnswer(userAnswer: Boolean) {
+        val correctAnswer = questionBank[currentIndex].answer
 
-        // Increase height
-        snackbarView.minimumHeight = 100 // Adjust height as needed
+        val messageResId = if (userAnswer == correctAnswer) {
+            R.string.correct_toast
+        } else {
+            R.string.incorrect_toast
+        }
 
-        // Set the Snackbar to appear at the top
-        params.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-        snackbarView.layoutParams = params
-
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
 }

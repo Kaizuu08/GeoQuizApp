@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,17 +10,26 @@
 
     <!-- TextView to display the quiz question -->
     <TextView
+        android:id="@+id/question_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="24dp"
-        android:text="@string/question_text" />
+        tools:text="@string/question_australia" />
 
     <!-- Horizontal LinearLayout to hold the True and False buttons -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
+        <!-- Previous button -->
+        <Button
+            android:id="@+id/previous_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/previous_button"
+            app:icon="@drawable/arrow_left"
+            app:iconGravity="start" />
         <!-- True button -->
         <Button
             android:id="@+id/true_button"
@@ -32,5 +43,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/false_button" />
+
+        <!-- Next button -->
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_button"
+            app:icon="@drawable/arrow_right"
+            app:iconGravity="end" />
+
     </LinearLayout>
 </LinearLayout>

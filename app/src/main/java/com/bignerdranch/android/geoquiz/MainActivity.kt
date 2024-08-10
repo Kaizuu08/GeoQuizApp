@@ -44,8 +44,15 @@ class MainActivity : AppCompatActivity() {
             updateQuestion() // Update the UI to show the new question
         }
 
-        // Use the same listener for the nextButton and the questionTextView
+        // Set click listener for the previous button
+        val previousQuestionListener = View.OnClickListener {
+            quizViewModel.moveToPrevious() // Move to the previous question in the ViewModel
+            updateQuestion() // Update the UI to show the previous question
+        }
+
+        // Attach listeners to the buttons and text view
         binding.nextButton.setOnClickListener(nextQuestionListener)
+        binding.previousButton.setOnClickListener(previousQuestionListener)
         binding.questionTextView.setOnClickListener(nextQuestionListener)
 
         // Update the question on the screen when the activity starts

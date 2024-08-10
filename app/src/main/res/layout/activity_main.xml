@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
     <!-- TextView to display the quiz question -->
+
     <TextView
         android:id="@+id/question_text_view"
         android:layout_width="wrap_content"
@@ -22,14 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <!-- Previous button -->
-        <Button
-            android:id="@+id/previous_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/previous_button"
-            app:icon="@drawable/arrow_left"
-            app:iconGravity="start" />
+
         <!-- True button -->
         <Button
             android:id="@+id/true_button"
@@ -42,16 +36,47 @@
             android:id="@+id/false_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="@string/false_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+        <!-- Previous button -->
+        <Button
+        android:id="@+id/previous_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/previous_button"
+        app:icon="@drawable/arrow_left"
+        app:iconGravity="start" />
 
         <!-- Next button -->
         <Button
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="@string/next_button"
             app:icon="@drawable/arrow_right"
             app:iconGravity="end" />
+        </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+    <!-- Cheat button at the bottom -->
+    <Button
+        android:id="@+id/cheat_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cheat_button"/>
     </LinearLayout>
 </LinearLayout>

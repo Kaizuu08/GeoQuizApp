@@ -12,8 +12,11 @@
   in the Americas.</string>
     <string name="question_asia">Lake Baikal is the world\'s oldest and deepest
   freshwater lake.</string>
+    <string name="question_sigma">If you swear on skibidi is that sigma?</string>
 
-    <!-- Buttons -->
+
+
+  <!-- Buttons -->
     <string name="true_button">True</string>
     <string name="false_button">False</string>
     <string name="correct_toast">Correct!</string>

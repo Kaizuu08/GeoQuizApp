@@ -1,11 +1,13 @@
 package com.bignerdranch.android.geoquiz
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 private const val TAG = "QuizViewModel"
+const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 
-class QuizViewModel : ViewModel() {
+class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     // List of questions in the quiz
     private val questionBank = listOf(
@@ -18,7 +20,9 @@ class QuizViewModel : ViewModel() {
     )
 
     // Index to track the current question
-    private var currentIndex = 0
+    private var currentIndex: Int
+        get() = savedStateHandle.get(CURRENT_INDEX_KEY) ?: 0 // Retrieve the saved index or default to 0
+        set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value) // Save the current index
 
     // Computed property to get the answer of the current question
     val currentQuestionAnswer: Boolean

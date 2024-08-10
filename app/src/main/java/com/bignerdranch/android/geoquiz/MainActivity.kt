@@ -1,5 +1,6 @@
 package com.bignerdranch.android.geoquiz
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,12 +31,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Set click listeners for True/False buttons
-        binding.trueButton.setOnClickListener { view: View ->
+        binding.trueButton.setOnClickListener {
             checkAnswer(true)
         }
 
-        binding.falseButton.setOnClickListener { view: View ->
+        binding.falseButton.setOnClickListener {
             checkAnswer(false)
+        }
+
+        binding.cheatButton.setOnClickListener {
+            // Start CheatActivity
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+            startActivity(intent)
         }
 
         // Set click listener for the next button

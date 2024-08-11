@@ -13,12 +13,14 @@ import com.bignerdranch.android.geoquiz.databinding.ActivityCheatBinding
 const val EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geoquiz.answer_shown"
 
 private const val EXTRA_ANSWER_IS_TRUE = "com.bignerdranch.android.geoquiz.answer_is_true"
+private const val KEY_IS_ANSWER_SHOWN = "is_answer_shown"
 
 private var answerIsTrue = false
 
 class CheatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCheatBinding
+    private var isAnswerShown: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +32,29 @@ class CheatActivity : AppCompatActivity() {
 
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
 
+        // Restore the saved state (if any)
+        if (savedInstanceState != null) {
+            isAnswerShown = savedInstanceState.getBoolean(KEY_IS_ANSWER_SHOWN, false)
+            if (isAnswerShown) {
+                setAnswerShownResult(true)
+                val answerText = if (answerIsTrue) {
+                    R.string.true_button
+                } else {
+                    R.string.false_button
+                }
+                binding.answerTextView.setText(answerText)
+            }
+        }
+
         binding.showAnswerButton.setOnClickListener {
-            val answerText = when {
-                answerIsTrue -> R.string.true_button
-                else -> R.string.false_button
+            val answerText = if (answerIsTrue) {
+                R.string.true_button
+            } else {
+                R.string.false_button
             }
             binding.answerTextView.setText(answerText)
             setAnswerShownResult(true)
+            isAnswerShown = true
         }
 
         // Handle window insets for edge-to-edge display
@@ -45,6 +63,11 @@ class CheatActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(KEY_IS_ANSWER_SHOWN, isAnswerShown)
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {
